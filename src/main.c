@@ -18,6 +18,7 @@
 /************************************************************************/
 
 #include "asf.h"
+#include "musicas.h"
 
 /************************************************************************/
 /* defines                                                              */
@@ -52,6 +53,7 @@
 /************************************************************************/
 
 void init(void);
+void freq(float);
 
 /************************************************************************/
 /* interrupcoes                                                         */
@@ -63,9 +65,14 @@ void init(void);
 
 
 
-void freq(double freq) {
-	double d = (1/2)*(1/(freq*1000000));
-	delay_ms(d);
+void freq(float freq) {
+	float dec = 1000000.0/(2.0*freq);
+	pio_set(LED_PIO, LED_PIO_IDX_MASK);
+	pio_clear(BUZ_PIO, BUZ_PIO_IDX_MASK);
+	delay_ms(dec);
+	pio_clear(LED_PIO, LED_PIO_IDX_MASK);
+	pio_set(BUZ_PIO, BUZ_PIO_IDX_MASK);
+	delay_ms(dec);
 	return;
 }
 
@@ -104,18 +111,30 @@ void init(void)
 // Funcao principal chamada na inicalizacao do uC.
 int main(void)
 {
-  init();
+	init();
 
-  // super loop
-  // aplicacoes embarcadas não devem sair do while(1).
-  while (1)
-  {
-	  pio_set(PIOC, LED_PIO_IDX_MASK);
-	  pio_set(PIOC, BUZ_PIO_IDX_MASK);      // Coloca 1 no pino LED
-	  delay_ms(500);          
-	  pio_clear(PIOC, BUZ_PIO_IDX_MASK);    // Coloca 0 no pino do LED
-	  pio_clear(PIOC, LED_PIO_IDX_MASK);
-	  delay_ms(500);                        // Delay por software de 200 ms
-  }
-  return 0;
+	// super loop
+	// aplicacoes embarcadas não devem sair do while(1).
+	int i = 0;
+	while (1)
+	{	
+		int t = sizeof(imperial_march_tempo)/sizeof(int);
+		for(int n = 0; n < i; n++) {
+			if(imperial_march_notes[i] != 0)
+			freq((int)imperial_march_notes[i]*TRESQUARTOSTEMPO);
+		}
+		if(i < t){
+			i++;
+		}else{
+			i = 0;
+		}
+	  
+		//pio_set(PIOC, LED_PIO_IDX_MASK);
+		//pio_set(PIOC, BUZ_PIO_IDX_MASK);      // Coloca 1 no pino LED
+		//delay_ms(500);          
+		//pio_clear(PIOC, BUZ_PIO_IDX_MASK);    // Coloca 0 no pino do LED
+		//pio_clear(PIOC, LED_PIO_IDX_MASK);
+		//delay_ms(500);                        // Delay por software de 200 ms
+	}
+	return 0;
 }

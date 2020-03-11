@@ -1,4 +1,4 @@
-// Fonte do código: https://stackoverflow.com/questions/33404063/how-to-convert-pcm-8khz-8bit-unsigned-to-mp3-in-c
+// Fonte do cï¿½digo: https://stackoverflow.com/questions/33404063/how-to-convert-pcm-8khz-8bit-unsigned-to-mp3-in-c
 // Autor: https://stackoverflow.com/users/164344/tim
 #include <stdio.h>
 #include <lame/lame.h>
@@ -6,10 +6,10 @@
 #define PCM_BUF_SIZE 1024
 #define MP3_SIZE 8192
 
-int main(int argc, char *argv[], char songname[])
+int main(int argc, char *argv[])
 {
 	FILE *pcm = fopen(argv[1], "rb");
-	FILE *mp3 = fopen(songname, "wb");
+	FILE *mp3 = fopen("naruto.mp3", "wb");
 
 	int n_bytes_read;
 	int n_bytes_write;
