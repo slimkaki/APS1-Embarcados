@@ -246,15 +246,6 @@ void init(void){
 	
 	pmc_enable_periph_clk(XLED3_PIO_ID);
 	
-	// configura pino ligado ao botão como entrada com um pull-up.
-	pio_set_input(BUT_PIO, BUT_PIO_IDX_MASK, PIO_DEFAULT);
-	
-	pio_set_input(XBUT1_PIO,XBUT1_PIO_IDX_MASK,PIO_DEFAULT);
-	
-	pio_set_input(XBUT2_PIO,XBUT2_PIO_IDX_MASK,PIO_DEFAULT);
-	
-	pio_set_input(XBUT3_PIO,XBUT3_PIO_IDX_MASK,PIO_DEFAULT);
-	
 	
 	// configura pinos ligado aos botoes como entrada com um pull-up.
 	pio_configure(BUT_PIO,PIO_INPUT,BUT_PIO_IDX_MASK,PIO_PULLUP);
