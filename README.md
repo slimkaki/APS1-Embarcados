@@ -43,7 +43,7 @@ O arquivo [`Musicas`](/src/musicas.h) contem todas as musicas e foi fornecido po
 
 ## Video de demonstração
 
-Plaquinha funcionando [aqui](https://youtu.be/i-tm3bHrrd4)
+Plaquinha funcionando [aqui](https://www.youtube.com/watch?v=Da765G66s0g&t=12s)
 
 ## Features implementadas de acordo com a [rúbrica](https://insper.github.io/ComputacaoEmbarcada/APS-1-Musical/)
 - A (1 item embarcado + 1 item C)
