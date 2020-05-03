@@ -80,6 +80,10 @@
 #define CORTEMP_UW 950  //Correcao temporal UNDER WORLD
 #define CORTEMP_PC 650  //Correcao temporal Piratas do Caribe
 #define McrToMli 100 //Convercao Micro to Mili
+#define BUT_PRIOR 5 //Prioridade botao da placa
+#define XBUT1_PRIOR 5 //Prioridade botao XOLED1
+#define XBUT2_PRIOR 5 //Prioridade botao XOLED2
+#define XBUT3_PRIOR 5 //Prioridade botao XOLED3
 
 #define new_song(song, n, t)                    \
 {                                           \
@@ -292,17 +296,16 @@ void init(void)
 	
 	//Set interruptores do projeto
 	NVIC_EnableIRQ(BUT_PIO_ID);
-	NVIC_SetPriority(BUT_PIO_ID, 5
-	); // Priority 1
+	NVIC_SetPriority(BUT_PIO_ID, BUT_PRIOR ); // Priority 1
 
 	NVIC_EnableIRQ(XBUT1_PIO_ID);
-	NVIC_SetPriority(XBUT1_PIO_ID, 5); // Priority 2
+	NVIC_SetPriority(XBUT1_PIO_ID, XBUT1_PRIOR); // Priority 2
 	
 	NVIC_EnableIRQ(XBUT2_PIO_ID);
-	NVIC_SetPriority(XBUT2_PIO_ID, 5); // Priority 2
+	NVIC_SetPriority(XBUT2_PIO_ID, XBUT2_PRIOR); // Priority 2
 	
 	NVIC_EnableIRQ(XBUT3_PIO_ID);
-	NVIC_SetPriority(XBUT3_PIO_ID, 5); // Priority 2
+	NVIC_SetPriority(XBUT3_PIO_ID, XBUT3_PRIOR); // Priority 2
 
 
 	pio_enable_interrupt(BUT_PIO, BUT_PIO_IDX_MASK);
