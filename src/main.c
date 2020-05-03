@@ -85,8 +85,7 @@
 #define XBUT2_PRIOR 5 //Prioridade botao XOLED2
 #define XBUT3_PRIOR 5 //Prioridade botao XOLED3
 
-#define new_song(song, n, t)                    \
-{                                           \
+#define new_song(song, n, t){               \
 	song.notes = n;                         \
 	song.tempos = t;                        \
 }
@@ -94,8 +93,7 @@
 /************************************************************************/
 /* structs                                                              */
 /************************************************************************/
-typedef struct
-{
+typedef struct{
 	int *notes;
 	int *tempos;
 } song;
@@ -124,25 +122,19 @@ volatile char XBUT2_flag = 0;
 volatile char XBUT3_flag = 0;
 
 
-void BUT_callback(void)
-{	
-
+void BUT_callback(void){
 	BUT_flag = 1;
-	
 }
 
-void XBUT1_callback(void)
-{
+void XBUT1_callback(void){
 	XBUT1_flag = 1;
 }
 
-void XBUT2_callback(void)
-{
+void XBUT2_callback(void){
 	XBUT2_flag = 1;
 }
 
-void XBUT3_callback(void)
-{
+void XBUT3_callback(void){
 	XBUT3_flag = 1;
 }
 
@@ -150,7 +142,7 @@ void XBUT3_callback(void)
 /* funcoes                                                              */
 /************************************************************************/
 
-void freq(int fr,int temp) {
+void freq(int fr,int temp){
 	int dec_us = McrToMli/(fr);
 	int tempo_us = temp;
 	int j = 0;
@@ -169,7 +161,7 @@ void freq(int fr,int temp) {
 
 void pause_play(int notes[],int tempos[],int correcao,int* last_but,int* last_n,int* pause,int len){
 	BUT_flag = 0;
-	for(int n = *last_n; n < len; n++) {
+	for(int n = *last_n; n < len; n++){
 		freq(notes[n],tempos[n]);
 		int PBN = tempos[n]*correcao; //Pause Between Notes
 		delay_us(PBN);
@@ -198,7 +190,7 @@ void pause_play(int notes[],int tempos[],int correcao,int* last_but,int* last_n,
 
 void norm_play(int notes[],int tempos[],int correcao,int* last_but,int* last_n,int* pause,int len){
 	BUT_flag = 0;
-	for(int n = 0; n < len; n++) {
+	for(int n = 0; n < len; n++){
 		freq(notes[n],tempos[n]);
 		int PBN = tempos[n]*correcao; //Pause Between Notes
 		delay_us(PBN);
@@ -227,8 +219,7 @@ void norm_play(int notes[],int tempos[],int correcao,int* last_but,int* last_n,i
 
 
 // Função de inicialização do uC
-void init(void)
-{	
+void init(void){	
 	sysclk_init();
 
 	// Desativa WatchDog Timer
@@ -354,15 +345,16 @@ int main(void)
 	// super loop
 	// aplicacoes embarcadas não devem sair do while(1).
 	
-	while (1)
-	{	
+	while (1){	
 		pio_set(XLED1_PIO, XLED1_PIO_IDX_MASK);
 		pio_set(XLED2_PIO, XLED2_PIO_IDX_MASK);
 		pio_set(XLED3_PIO, XLED3_PIO_IDX_MASK);
 		
 
 		
-		if (pause) pmc_sleep(SAM_PM_SMODE_SLEEP_WFI); // Espera ate que um interrupitor ligue
+		if (pause){
+			pmc_sleep(SAM_PM_SMODE_SLEEP_WFI) // Espera ate que um interrupitor ligue
+		} 
 		
 		if (XBUT1_flag){
 			pause = 0;
@@ -391,10 +383,8 @@ int main(void)
 		if (BUT_flag){
 			BUT_flag = 0;
 			if (pause == 1){
-				if (last_but!=0)
-				{
-					if (last_but==1)
-					{
+				if (last_but!=0){
+					if (last_but==1){
 						pio_clear(XLED1_PIO, XLED1_PIO_IDX_MASK);
 						int len = sizeof(pirate_notes)/sizeof(int);
 						pause_play(s1.notes,s1.tempos,CORTEMP_PC,&last_but,&last_n,&pause,len);
@@ -415,7 +405,7 @@ int main(void)
 				}
 				
 			}
-			else {
+			else{
 				pause = 1;
 			}
 			
