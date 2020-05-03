@@ -110,7 +110,6 @@ void BUT_callback(void);
 void XBUT1_callback(void);
 void XBUT2_callback(void);
 void XBUT3_callback(void);
-void norm_play(int notes[],int tempos[],int correcao,int* last_but,int* last_n,int* pause,int len);
 void pause_play(int notes[],int tempos[],int correcao,int* last_but,int* last_n,int* pause,int len);
 /************************************************************************/
 /* interrupcoes                                                         */
@@ -161,62 +160,62 @@ void freq(int fr,int temp){
 
 void pause_play(int notes[],int tempos[],int correcao,int* last_but,int* last_n,int* pause,int len){
 	BUT_flag = 0;
-	for(int n = *last_n; n < len; n++){
-		freq(notes[n],tempos[n]);
-		int PBN = tempos[n]*correcao; //Pause Between Notes
-		delay_us(PBN);
-		freq(0,0);
-		if (BUT_flag){
-			*last_n = n;
-			*pause = 1;
-			if(correcao==650){
-				*last_but = 1;
+	if (*pause){
+		for(int n = *last_n; n < len; n++){
+			freq(notes[n],tempos[n]);
+			int PBN = tempos[n]*correcao; //Pause Between Notes
+			delay_us(PBN);
+			freq(0,0);
+			if (BUT_flag){
+				*last_n = n;
+				*pause = 1;
+				if(correcao==650){
+					*last_but = 1;
+				}
+				else if(correcao==375){
+					*last_but = 2;
+				}
+				else{
+					*last_but = 3;
+				}
+				return;
 			}
-			else if(correcao==375){
-				*last_but = 2;
-			}
-			else{
-				*last_but = 3;
-			}
-			return;
+			
 		}
-		
+		*pause = 0;
+		*last_but = 0;
+		*last_n = 0;
+		return;
 	}
-	*pause = 0;
-	*last_but = 0;
-	*last_n = 0;
-	return;
-}
-
-void norm_play(int notes[],int tempos[],int correcao,int* last_but,int* last_n,int* pause,int len){
-	BUT_flag = 0;
-	for(int n = 0; n < len; n++){
-		freq(notes[n],tempos[n]);
-		int PBN = tempos[n]*correcao; //Pause Between Notes
-		delay_us(PBN);
-		freq(0,0);
-		if (BUT_flag){
-			*last_n = n;
-			*pause = 1;
-			if(correcao==650){
-				*last_but = 1;
+	else{
+		for(int n = 0; n < len; n++){
+			freq(notes[n],tempos[n]);
+			int PBN = tempos[n]*correcao; //Pause Between Notes
+			delay_us(PBN);
+			freq(0,0);
+			if (BUT_flag){
+				*last_n = n;
+				*pause = 1;
+				if(correcao==650){
+					*last_but = 1;
+				}
+				else if(correcao==375){
+					*last_but = 2;
+				}
+				else{
+					*last_but = 3;
+				}
+				return;
 			}
-			else if(correcao==375){
-				*last_but = 2;
-			}
-			else{
-				*last_but = 3;
-			}
-			return;
+			
 		}
-		
+		*pause = 0;
+		*last_but = 0;
+		*last_n = 0;
+		return;
 	}
-	*pause = 0;
-	*last_but = 0;
-	*last_n = 0;
-	return;
+	
 }
-
 
 // Função de inicialização do uC
 void init(void){	
@@ -353,7 +352,7 @@ int main(void)
 			last_but=0;
 			pio_clear(XLED1_PIO, XLED1_PIO_IDX_MASK);
 			int len = sizeof(pirate_notes)/sizeof(int);
-			norm_play(s1.notes,s1.tempos,CORTEMP_PC,&last_but,&last_n,&pause,len);
+			pause_play(s1.notes,s1.tempos,CORTEMP_PC,&last_but,&last_n,&pause,len);
 		}
 		if (XBUT2_flag){
 			pause = 0;
@@ -361,7 +360,7 @@ int main(void)
 			last_but=0;
 			pio_clear(XLED2_PIO, XLED2_PIO_IDX_MASK);
 			int len = sizeof(imperial_march_notes)/sizeof(int);
-			norm_play(s2.notes,s2.tempos,CORTEMP_SW,&last_but,&last_n,&pause,len);
+			pause_play(s2.notes,s2.tempos,CORTEMP_SW,&last_but,&last_n,&pause,len);
 		}
 		if (XBUT3_flag){
 			pause = 0;
@@ -369,7 +368,7 @@ int main(void)
 			last_but=0;
 			pio_clear(XLED3_PIO, XLED3_PIO_IDX_MASK);
 			int len = sizeof(underworld_melody)/sizeof(int);
-			norm_play(s3.notes,s3.tempos,CORTEMP_UW,&last_but,&last_n,&pause,len);
+			pause_play(s3.notes,s3.tempos,CORTEMP_UW,&last_but,&last_n,&pause,len);
 		}
 		if (BUT_flag){
 			BUT_flag = 0;
