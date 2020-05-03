@@ -79,6 +79,7 @@
 #define CORTEMP_SW 375  //Correcao temporal StarWar
 #define CORTEMP_UW 950  //Correcao temporal UNDER WORLD
 #define CORTEMP_PC 650  //Correcao temporal Piratas do Caribe
+#define McrToMli 100 //Convercao Micro to Mili
 
 #define new_song(song, n, t)                    \
 {                                           \
@@ -146,10 +147,10 @@ void XBUT3_callback(void)
 /************************************************************************/
 
 void freq(int fr,int temp) {
-	int dec_us = 100000/(fr*2);
-	int tempo_us = temp*1000;
+	int dec_us = McrToMli/(fr);
+	int tempo_us = temp;
 	int j = 0;
-	while (j<tempo_us/(dec_us*2)){
+	while (j<tempo_us/(dec_us)){
 		pio_clear(LED_PIO, LED_PIO_IDX_MASK);
 		pio_set(BUZ_PIO, BUZ_PIO_IDX_MASK);
 		delay_us(dec_us);
